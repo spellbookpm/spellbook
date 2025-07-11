@@ -1,6 +1,8 @@
 defmodule Spellbook.Cast do
   @behaviour Spellbook.Action
 
+  # TODO: refactor to use pipes
+
   def perform(args) do
     IO.puts("Warming up to perform cast...")
     IO.puts("Casting #{args}")

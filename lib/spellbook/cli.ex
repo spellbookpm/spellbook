@@ -10,14 +10,6 @@ defmodule Spellbook.CLI do
       about: "A magical system package manager",
       allow_unknown_args: false,
       parse_double_dash: true,
-      flags: [
-        version: [
-          short: "-v",
-          long: "--version",
-          help: "Show the version number",
-          multiple: false
-        ]
-      ],
       subcommands: [
         cast: [
           name: "cast",
@@ -25,34 +17,110 @@ defmodule Spellbook.CLI do
           args: [
             spell: [
               value_name: "SPELL",
-              help: "Cast (install) a spell (package)",
+              help: "Package",
               required: true,
               parser: :string
             ]
           ]
+        ],
+        dispel: [
+          name: "dispel",
+          about: "Dispel (uninstall) a spell (package)",
+          args: [
+            spell: [
+              value_name: "SPELL",
+              help: "Package",
+              required: true,
+              parser: :string
+            ]
+          ]
+        ],
+        scry: [
+          name: "scry",
+          about: "Search for a spell",
+          args: [
+            term: [
+              value_name: "TERM",
+              help: "Scrying term",
+              required: true,
+              parser: :string
+            ]
+          ]
+        ],
+        grimoire: [
+          name: "grimoire",
+          about: "List casted spells"
+        ],
+        reveal: [
+          name: "reveal",
+          about: "Reveal information about a spell",
+          args: [
+            spell: [
+              value_name: "SPELL",
+              help: "PACKAGE",
+              required: true,
+              parser: :string
+            ]
+          ]
+        ],
+        renew: [
+          name: "renew",
+          about: "Renew your spellbook shelf"
+        ],
+        empower: [
+          name: "empower",
+          about: "Upgrade a casted spell"
         ]
       ]
     )
 
-    case Optimus.parse(optimus, args) do
+    # dbg(optimus)
+
+    result = Optimus.parse(optimus, args)
+    # IO.inspect(result)
+    # dbg(result)
+
+    case result do
       :help -> IO.puts(Optimus.help(optimus))
-      :version -> IO.puts("spellbook version #{@version}")
-      {:ok, [subcommand], cast_result} ->
-        case subcommand do
-          :cast -> handle_cast(cast_result)
-          :help -> IO.puts(Optimus.help(optimus))
-          _ -> IO.puts("Unknown command: #{subcommand}")
-        end
-      {:ok, _parse_result} ->
-        IO.puts(Optimus.help(optimus))
-      {:error, message} -> 
-        IO.puts("Error: #{message}")
+      {:help, [subcommand]} -> 
+        # dbg(subcommand)
+        # dbg(optimus.subcommands)
+        Enum.find(optimus.subcommands, fn sub -> sub.subcommand == subcommand end)
+        |> Optimus.help()
+        |> IO.puts()
+      {:ok, subcommand, args} -> handle(subcommand, args)
+      # {:error, subcommand, message} ->
+      _ -> IO.puts(Optimus.help(optimus))
     end
   end
 
-  defp handle_cast(%{args: %{spell: spell}}) do
-    # IO.puts("Casting spell: #{spell}")
+  defp handle([:cast], %{args: %{spell: spell}}) do
+    IO.puts("Casting spell: #{spell}")
     Spellbook.Cast.perform(spell)
+  end
+
+  defp handle([:dispel], %{args: %{spell: spell}}) do
+    IO.puts("Dispelling spell: #{spell}")
+  end
+
+  defp handle([:scry], %{args: %{term: term}}) do
+    IO.puts("Scrying #{term}")
+  end
+
+  defp handle([:grimoire], _args) do
+    IO.puts("Listing spells from your grimoire")
+  end
+
+  defp handle([:reveal], %{args: %{spell: spell}}) do
+    IO.puts("Revealing spell: #{spell}")
+  end
+
+  defp handle([:renew], _args) do
+    IO.puts("Renewing")
+  end
+
+  defp handle([:empower], _args) do
+    IO.puts("Empowering")
   end
 
 end
