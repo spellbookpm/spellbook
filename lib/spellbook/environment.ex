@@ -1,6 +1,6 @@
 defmodule Spellbook.Environment do
   def prefix(), do: System.get_env("SPELLBOOK_PREFIX") || "/opt/spellbook"
-  def the_stacks(), do: System.get_env("SPELLBOOK_THE_STACKS") || "#{spells_dir()}/TheStacks"
+  def the_stacks(), do: System.get_env("SPELLBOOK_THE_STACKS") || "#{prefix()}/TheStacks"
 
   def default_spell_book(),
     do: System.get_env("SPELLBOOK_DEFAULT_BOOK") || "#{the_stacks()}/StandardBookOfSpells"

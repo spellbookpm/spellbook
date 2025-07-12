@@ -28,6 +28,7 @@ defmodule Spellbook.Stacks do
 
   def clone_default_spellbook() do
     create_stacks()
+    IO.puts("Cloning #{@default_spellbook} into #{@stacks}")
     Spellbook.GitOps.clone(@default_spellbook, @stacks)   
   end
 end
