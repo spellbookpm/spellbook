@@ -23,4 +23,6 @@ spellbook-*.tar
 /tmp/
 
 # ignore the output binary
-spellbook
+./spellbook
+
+./config.log
