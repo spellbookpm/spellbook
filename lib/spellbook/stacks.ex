@@ -1,6 +1,7 @@
 defmodule Spellbook.Stacks do
   @stacks Spellbook.Environment.the_stacks()
-  @default_spellbook Spellbook.Environment.default_spellbook_repo()
+  @default_spellbook_repo Spellbook.Environment.default_spellbook_repo()
+  @default_spellbook Spellbook.Environment.default_spell_book()
 
   def create_stacks() do
     if File.exists?(@stacks) == false do
@@ -28,7 +29,13 @@ defmodule Spellbook.Stacks do
 
   def clone_default_spellbook() do
     create_stacks()
-    IO.puts("Cloning #{@default_spellbook} into #{@stacks}")
-    Spellbook.GitOps.clone(@default_spellbook, @stacks)   
+    IO.puts("Cloning #{@default_spellbook_repo} into #{@stacks}")
+    Spellbook.GitOps.clone(@default_spellbook_repo, @stacks)   
+  end
+
+  def update_default_spellbook() do
+    if File.exists?(@default_spellbook) do
+      Spellbook.GitOps.fetch_and_pull(@default_spellbook) 
+    end  
   end
 end
