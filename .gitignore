@@ -21,3 +21,6 @@ spellbook-*.tar
 
 # Temporary files, for example, from tests.
 /tmp/
+
+# ignore the output binary
+spellbook
