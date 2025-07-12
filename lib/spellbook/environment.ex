@@ -8,6 +8,8 @@ defmodule Spellbook.Environment do
   def spells_dir(), do: System.get_env("SPELLBOOK_SPELLS") || "#{prefix()}/Spells"
   def temp_dir(), do: System.get_env("SPELLBOOK_TEMP") || System.tmp_dir!()
 
+  def default_spellbook_repo, do: System.get_env("SPELLBOOK_DEFAULT_SPELLBOOK_REPO") || "https://github.com/martintc/StandardBookOfSpells.git"
+
   def all do
     %{
       prefix: prefix(),
