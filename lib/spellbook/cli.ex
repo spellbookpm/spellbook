@@ -122,8 +122,8 @@ defmodule Spellbook.CLI do
     IO.puts("Revealing spell: #{spell}")
   end
 
-  defp handle([:renew], _args) do
-    IO.puts("Renewing")
+  defp handle([:renew], args) do
+    Spellbook.Renew.perform(args) 
   end
 
   defp handle([:empower], _args) do

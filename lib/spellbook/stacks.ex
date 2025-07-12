@@ -27,6 +27,14 @@ defmodule Spellbook.Stacks do
     end
   end
 
+  def contains_default_spellbook() do
+    if File.exists?(@default_spellbook) do
+      true
+    else
+      false
+    end
+  end
+
   def clone_default_spellbook() do
     create_stacks()
     IO.puts("Cloning #{@default_spellbook_repo} into #{@stacks}")
