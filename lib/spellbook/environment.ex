@@ -1,7 +1,10 @@
 defmodule Spellbook.Environment do
   def prefix(), do: System.get_env("SPELLBOOK_PREFIX") || "/opt/spellbook"
   def shelves_dir(), do: System.get_env("SPELLBOOK_SHELVES") || "#{spells_dir()}/Shelves"
-  def default_spell_book(), do: System.get_env("SPELLBOOK_DEFAULT_BOOK") || "#{shelves_dir()}/StandardBookOfSpells"
+
+  def default_spell_book(),
+    do: System.get_env("SPELLBOOK_DEFAULT_BOOK") || "#{shelves_dir()}/StandardBookOfSpells"
+
   def spells_dir(), do: System.get_env("SPELLBOOK_SPELLS") || "#{prefix()}/Spells"
   def temp_dir(), do: System.get_env("SPELLBOOK_TEMP") || System.tmp_dir!()
 

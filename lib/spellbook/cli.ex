@@ -2,77 +2,78 @@ defmodule Spellbook.CLI do
   @version "0.0.1"
 
   def main(args) do
-    optimus = Optimus.new!(
-      name: "spellbook",
-      description: "Magical system package manager",
-      version: @version,
-      author: "Todd Martin",
-      about: "A magical system package manager",
-      allow_unknown_args: false,
-      parse_double_dash: true,
-      subcommands: [
-        cast: [
-          name: "cast",
-          about: "Cast (install) a spell (package)",
-          args: [
-            spell: [
-              value_name: "SPELL",
-              help: "Package",
-              required: true,
-              parser: :string
+    optimus =
+      Optimus.new!(
+        name: "spellbook",
+        description: "Magical system package manager",
+        version: @version,
+        author: "Todd Martin",
+        about: "A magical system package manager",
+        allow_unknown_args: false,
+        parse_double_dash: true,
+        subcommands: [
+          cast: [
+            name: "cast",
+            about: "Cast (install) a spell (package)",
+            args: [
+              spell: [
+                value_name: "SPELL",
+                help: "Package",
+                required: true,
+                parser: :string
+              ]
             ]
-          ]
-        ],
-        dispel: [
-          name: "dispel",
-          about: "Dispel (uninstall) a spell (package)",
-          args: [
-            spell: [
-              value_name: "SPELL",
-              help: "Package",
-              required: true,
-              parser: :string
+          ],
+          dispel: [
+            name: "dispel",
+            about: "Dispel (uninstall) a spell (package)",
+            args: [
+              spell: [
+                value_name: "SPELL",
+                help: "Package",
+                required: true,
+                parser: :string
+              ]
             ]
-          ]
-        ],
-        scry: [
-          name: "scry",
-          about: "Search for a spell",
-          args: [
-            term: [
-              value_name: "TERM",
-              help: "Scrying term",
-              required: true,
-              parser: :string
+          ],
+          scry: [
+            name: "scry",
+            about: "Search for a spell",
+            args: [
+              term: [
+                value_name: "TERM",
+                help: "Scrying term",
+                required: true,
+                parser: :string
+              ]
             ]
-          ]
-        ],
-        grimoire: [
-          name: "grimoire",
-          about: "List casted spells"
-        ],
-        reveal: [
-          name: "reveal",
-          about: "Reveal information about a spell",
-          args: [
-            spell: [
-              value_name: "SPELL",
-              help: "PACKAGE",
-              required: true,
-              parser: :string
+          ],
+          grimoire: [
+            name: "grimoire",
+            about: "List casted spells"
+          ],
+          reveal: [
+            name: "reveal",
+            about: "Reveal information about a spell",
+            args: [
+              spell: [
+                value_name: "SPELL",
+                help: "PACKAGE",
+                required: true,
+                parser: :string
+              ]
             ]
+          ],
+          renew: [
+            name: "renew",
+            about: "Renew your spellbook shelf"
+          ],
+          empower: [
+            name: "empower",
+            about: "Upgrade a casted spell"
           ]
-        ],
-        renew: [
-          name: "renew",
-          about: "Renew your spellbook shelf"
-        ],
-        empower: [
-          name: "empower",
-          about: "Upgrade a casted spell"
         ]
-      ]
-    )
+      )
 
     # dbg(optimus)
 
@@ -81,16 +82,22 @@ defmodule Spellbook.CLI do
     # dbg(result)
 
     case result do
-      :help -> IO.puts(Optimus.help(optimus))
-      {:help, [subcommand]} -> 
+      :help ->
+        IO.puts(Optimus.help(optimus))
+
+      {:help, [subcommand]} ->
         # dbg(subcommand)
         # dbg(optimus.subcommands)
         Enum.find(optimus.subcommands, fn sub -> sub.subcommand == subcommand end)
         |> Optimus.help()
         |> IO.puts()
-      {:ok, subcommand, args} -> handle(subcommand, args)
+
+      {:ok, subcommand, args} ->
+        handle(subcommand, args)
+
       # {:error, subcommand, message} ->
-      _ -> IO.puts(Optimus.help(optimus))
+      _ ->
+        IO.puts(Optimus.help(optimus))
     end
   end
 
@@ -122,6 +129,4 @@ defmodule Spellbook.CLI do
   defp handle([:empower], _args) do
     IO.puts("Empowering")
   end
-
 end
-

@@ -19,5 +19,4 @@ defmodule Spellbook do
   def main(args) do
     Spellbook.CLI.main(args)
   end
-
 end

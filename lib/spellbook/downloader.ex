@@ -1,5 +1,4 @@
 defmodule Spellbook.Downloader do
-
   def download(url, dst_path) do
     try do
       Req.get!(url, into: File.stream!(dst_path, [:write, :binary]))
@@ -8,5 +7,4 @@ defmodule Spellbook.Downloader do
       e -> {:error, Exception.message(e)}
     end
   end
-
 end

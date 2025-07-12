@@ -9,4 +9,3 @@ defmodule Spellbook.Spell do
   @callback source :: String.t()
   @callback install(args :: map()) :: any()
 end
-

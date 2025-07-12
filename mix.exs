@@ -8,7 +8,7 @@ defmodule Spellbook.MixProject do
       elixir: "~> 1.18",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-      escript: [main_module: Spellbook] 
+      escript: [main_module: Spellbook]
     ]
   end
 
