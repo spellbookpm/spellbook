@@ -9,15 +9,9 @@ defmodule Spellbook.Scry do
     IO.puts("Searching the stacks for #{args}...")
     stack_path = Environment.the_stacks()
 
-    stack_path
-    |> File.ls!()
-    |> Enum.filter(fn file -> file != ".git" end)
-    |> Enum.map(fn file -> stack_path <> "/" <> file end)
-    |> Enum.each(fn file ->
-      if File.dir?(file) do
-        perform_search(file, args)
-      end
-    end)
+    perform_search(stack_path, args)
+    |> List.flatten()
+    |> Enum.each(fn spell -> IO.puts(spell) end)
 
     IO.puts("Search complete...")
   end
@@ -25,21 +19,27 @@ defmodule Spellbook.Scry do
   defp perform_search(dir, search_term) do
     dir
     |> File.ls!()
-    |> Enum.filter(fn file -> file != ".git" end)
-    |> Enum.map(fn file -> dir <> "/" <> file end)
-    |> Enum.each(fn file ->
-      if File.dir?(file) do
-        perform_search(file, search_term)
-      else
-        term =
-          file
-          |> Path.basename()
-          |> Path.rootname()
+    |> Enum.reject(fn file -> file == ".git" end)
+    |> Enum.map(fn file ->
+      path = Path.join(dir, file)
 
-        if String.jaro_distance(term, search_term) > 0.8 do
-          IO.puts("#{term}")
-        end
+      cond do
+        File.dir?(path) ->
+          perform_search(path, search_term)
+
+        is_match?(path, search_term) ->
+          path
+          |> Path.basename()
+          |> Path.rootname(".exs")
+
+        true ->
+          nil
       end
     end)
+  end
+
+  defp is_match?(file, search_term) do
+    probable = Path.basename(file) |> Path.rootname(".exs")
+    String.jaro_distance(probable, search_term) >= 0.8
   end
 end
