@@ -46,4 +46,30 @@ defmodule Spellbook.Stacks do
       Spellbook.GitOps.fetch_and_pull(@default_spellbook)
     end
   end
+
+  def search_stacks(search_term) do
+    do_search(@stacks, search_term)
+    |> List.flatten()
+    |> Enum.reject(fn path -> path == nil end)
+  end
+
+  defp do_search(dir, search_term) do
+    dir
+    |> File.ls!()
+    |> Enum.reject(fn file -> file == ".git" end)
+    |> Enum.map(fn file ->
+      path = Path.join(dir, file)
+
+      cond do
+        File.dir?(path) ->
+          do_search(path, search_term)
+
+        Spellbook.Utils.is_match?(path, search_term) ->
+          path
+
+        true ->
+          nil
+      end
+    end)
+  end
 end
