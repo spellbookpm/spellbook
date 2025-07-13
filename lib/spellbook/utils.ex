@@ -85,4 +85,9 @@ defmodule Spellbook.Utils do
       {_collectable, 1} -> {:error, "Could not untar file..."}
     end
   end
+
+  def is_match?(file, search_term) do
+    spec = Path.basename(file) |> Path.rootname(".exs")
+    String.jaro_distance(spec, search_term) == 1.0
+  end
 end
