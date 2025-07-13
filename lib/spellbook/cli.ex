@@ -122,9 +122,11 @@ defmodule Spellbook.CLI do
 
   defp handle([:reveal], %{args: %{spell: spell}}) do
     IO.puts("Revealing spell: #{spell}")
+    Spellbook.Reveal.perform(spell)
   end
 
   defp handle([:renew], args) do
+    IO.puts("Renewing the stacks...")
     Spellbook.Renew.perform(args)
   end
 
