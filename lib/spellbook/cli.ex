@@ -115,8 +115,9 @@ defmodule Spellbook.CLI do
     Spellbook.Scry.perform(term)
   end
 
-  defp handle([:grimoire], _args) do
+  defp handle([:grimoire], args) do
     IO.puts("Listing spells from your grimoire")
+    Spellbook.Grimoire.perform(args)
   end
 
   defp handle([:reveal], %{args: %{spell: spell}}) do
