@@ -15,7 +15,7 @@ defmodule Spellbook.Scry do
     |> Enum.map(fn file -> stack_path <> "/" <> file end)
     |> Enum.each(fn file ->
       if File.dir?(file) do
-        perform_search(file, args) 
+        perform_search(file, args)
       end
     end)
 
@@ -31,9 +31,11 @@ defmodule Spellbook.Scry do
       if File.dir?(file) do
         perform_search(file, search_term)
       else
-        term = file 
+        term =
+          file
           |> Path.basename()
           |> Path.rootname()
+
         if String.jaro_distance(term, search_term) > 0.8 do
           IO.puts("#{term}")
         end
