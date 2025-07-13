@@ -1,14 +1,30 @@
 defmodule Spellbook.Cast do
   @behaviour Spellbook.Action
 
+  alias Spellbook.Stacks
+
   # TODO: refactor to use pipes
 
   def perform(args) do
+    IO.puts("Looking up spell #{args}")
+
+    spec =
+      case Stacks.search_stacks(args) do
+        [] ->
+          IO.puts("Could not find #{args}")
+          :error
+
+        [first | _rest] ->
+          first
+      end
+
+    dbg(spec)
+
     IO.puts("Warming up to perform cast...")
     IO.puts("Casting #{args}")
 
     module =
-      case load_file(args) do
+      case load_file(spec) do
         {:ok, module} -> module
         {:error, message} -> IO.puts("Error: #{message}")
       end
@@ -37,8 +53,6 @@ defmodule Spellbook.Cast do
           IO.puts("Error creating build directory: #{message}")
           System.halt(1)
       end
-
-    IO.puts("Now on to something else")
 
     # download and extract
     tar_executable =
