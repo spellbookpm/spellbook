@@ -38,12 +38,12 @@ defmodule Spellbook.Stacks do
   def clone_default_spellbook() do
     create_stacks()
     IO.puts("Cloning #{@default_spellbook_repo} into #{@stacks}")
-    Spellbook.GitOps.clone(@default_spellbook_repo, @stacks)   
+    Spellbook.GitOps.clone(@default_spellbook_repo, @stacks)
   end
 
   def update_default_spellbook() do
     if File.exists?(@default_spellbook) do
-      Spellbook.GitOps.fetch_and_pull(@default_spellbook) 
-    end  
+      Spellbook.GitOps.fetch_and_pull(@default_spellbook)
+    end
   end
 end

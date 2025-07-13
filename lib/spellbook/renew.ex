@@ -9,6 +9,5 @@ defmodule Spellbook.Renew do
     else
       Stacks.clone_default_spellbook()
     end
-
   end
 end

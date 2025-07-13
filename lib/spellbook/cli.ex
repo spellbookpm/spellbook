@@ -112,6 +112,7 @@ defmodule Spellbook.CLI do
 
   defp handle([:scry], %{args: %{term: term}}) do
     IO.puts("Scrying #{term}")
+    Spellbook.Scry.perform(term)
   end
 
   defp handle([:grimoire], _args) do
@@ -123,7 +124,7 @@ defmodule Spellbook.CLI do
   end
 
   defp handle([:renew], args) do
-    Spellbook.Renew.perform(args) 
+    Spellbook.Renew.perform(args)
   end
 
   defp handle([:empower], _args) do
