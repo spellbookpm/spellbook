@@ -18,6 +18,7 @@ defmodule Spellbook.Reveal do
             IO.puts("type: #{module.type()}")
             IO.puts("homepage: #{module.homepage()}")
             IO.puts("license: #{module.license()}")
+
           _ ->
             IO.puts("Could not load module for #{spec}")
             :error

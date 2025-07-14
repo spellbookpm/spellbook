@@ -22,8 +22,8 @@ defmodule Spellbook.Utils do
     File.ln_s!(source, target)
   end
 
+  # TODO: refactor into Spellbook.Downloader
   def download_source(source, target_dir, _target_name) do
-    # file_name = Path.basename(source)
     file_name = List.last(String.split(source, "/"))
 
     dst_path =
@@ -89,5 +89,27 @@ defmodule Spellbook.Utils do
   def is_match?(file, search_term) do
     spec = Path.basename(file) |> Path.rootname(".exs")
     String.jaro_distance(spec, search_term) == 1.0
+  end
+
+  def remove_file(file) do
+    if File.exists?(file) do
+      Io.puts("Removing file: #{file}")
+      File.rm(file)
+    end
+  end
+
+  def remove_files(files) when is_list(files) do
+    files
+    |> Enum.each(fn entry ->
+      if File.exists?(entry) do
+        IO.puts("Removing file: #{entry}")
+        File.rm(entry)
+      end
+    end)
+  end
+
+  def rm_rf(path) do
+    IO.puts("Removing directly #{path}")
+    File.rm_rf(path)
   end
 end

@@ -108,6 +108,7 @@ defmodule Spellbook.CLI do
 
   defp handle([:dispel], %{args: %{spell: spell}}) do
     IO.puts("Dispelling spell: #{spell}")
+    Spellbook.Dispel.perform(spell)
   end
 
   defp handle([:scry], %{args: %{term: term}}) do
