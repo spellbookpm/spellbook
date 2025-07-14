@@ -19,7 +19,7 @@ defmodule Spellbook.GitOps do
   def fetch_and_pull(cwd) do
     {ok, git_path} = Spellbook.Utils.get_executable_path("git")
 
-    case System.cmd(git_path, ["fetch", "--all"], cd: cwd) do
+    case System.cmd(git_path, ["fetch", "--all"], cd: cwd, into: IO.stream()) do
       {_message, 0} ->
         :ok
 
@@ -31,7 +31,7 @@ defmodule Spellbook.GitOps do
         :error
     end
 
-    case System.cmd(git_path, ["pull"], cd: cwd) do
+    case System.cmd(git_path, ["pull"], cd: cwd, into: IO.stream()) do
       {_message, 0} ->
         :ok
 

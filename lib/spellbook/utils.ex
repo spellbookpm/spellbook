@@ -65,6 +65,12 @@ defmodule Spellbook.Utils do
     end
   end
 
+  @doc ~S"""
+  Computes the folder structure for a the install prefix
+  ## Examples
+    iex> Spellbook.Utils.compute_install_prefix("htop", "3.4.1")
+    "/opt/spellbook/Spells/htop/3.4.1"
+  """
   def compute_install_prefix(module_name, module_version) do
     Spellbook.Environment.spells_dir() <> "/#{module_name}/#{module_version}"
   end
@@ -86,6 +92,16 @@ defmodule Spellbook.Utils do
     end
   end
 
+  @doc ~S"""
+  Checks to see if there is an exact match between two strings
+
+  ## Examples
+    iex> Spellbook.Utils.is_match?("one", "one")
+    true
+
+    iex> Spellbook.Utils.is_match?("one", "two")
+    false
+  """
   def is_match?(file, search_term) do
     spec = Path.basename(file) |> Path.rootname(".exs")
     String.jaro_distance(spec, search_term) == 1.0
