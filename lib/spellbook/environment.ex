@@ -11,7 +11,7 @@ defmodule Spellbook.Environment do
   def default_spellbook_repo,
     do:
       System.get_env("SPELLBOOK_DEFAULT_SPELLBOOK_REPO") ||
-        "https://github.com/martintc/StandardBookOfSpells.git"
+        "https://github.com/spellbookpm/StandardBookOfSpells.git"
 
   def all do
     %{
