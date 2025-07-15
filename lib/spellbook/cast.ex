@@ -1,10 +1,22 @@
 defmodule Spellbook.Cast do
+  @moduledoc """
+  The module that is called in to for the cast subcommand. The main bit of code is the perform function
+  which, in this case, handles the process of installing a specified 'spell' should it exist.
+
+  Currently, this is done by pulling the source code for the project based on the spell specification
+  and then setting up a temporary directory to build in, followed by building and installing into the
+  appropriate paths.
+  """
+
   @behaviour Spellbook.Action
 
   alias Spellbook.Stacks
 
   # TODO: refactor to use pipes
 
+  @doc """
+   Function called by the cli to handle casting of a spell, or installing a requested package. 
+  """
   def perform(args) do
     IO.puts("Looking up spell #{args}")
 
@@ -99,6 +111,10 @@ defmodule Spellbook.Cast do
     IO.puts("Done casting...")
   end
 
+  @doc """
+  Helper function to compile and load a path'd exs file. In this case, it is used to load
+  the spell specification from the 'ports tree' repository on the disk.
+  """
   defp load_file(args) do
     case Code.compile_file(args) do
       [{module, _binary}] ->

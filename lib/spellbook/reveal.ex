@@ -1,6 +1,16 @@
 defmodule Spellbook.Reveal do
+  @moduledoc """
+  Module for containing the code to handle the reveal subcommand.
+  """
+  
   @behaviour Spellbook.Action
 
+  @doc """
+  Function handler called into my the CLI parser for handling the reveal subcommand.
+
+  Performs a search of the stacks for a spell definition. If it exists, load it and
+  print out information about the spell for the user.
+  """
   def perform(args) do
     IO.puts("Search stacks for #{args}")
 

@@ -1,8 +1,24 @@
 defmodule Spellbook.Linker do
+  @moduledoc """
+  The linker module deals with code that 'links' files. When a spell is installed, it's install
+  artifacts are kept in `$PREFIX/Spells/<SPELL_NAME>`. Linking is the process of taking those
+  subdirectories and files and creating symlinks to their final location.
+
+  For instance, htop will output a `bin/` folder that contains `bin/htop` and will be in the
+  `/opt/spellbook/Spells/htop/<VERSION>/` folder. When linking, we should traverse recursively starting from
+  the `<VERSION>` folder generating a list of all files. Then creating symbolic links to their appropraite
+  location. So in the case of `/opt/spellbook/Spells/htop/<VERSION>/bin/htop`, it should create a symlink
+  to `/opt/spellbook/bin/htop`.
+  """
+  
   @bin Path.join(Spellbook.Environment.prefix(), "bin")
   @share Path.join(Spellbook.Environment.prefix(), "share")
   @lib Path.join(Spellbook.Environment.prefix(), "lib")
 
+  @doc """
+  Function to be called to perform the linking for all files. Takes the package name
+  and package version.
+  """
   def link_spell(name, version) do
     base =
       Spellbook.Environment.spells_dir()
@@ -15,6 +31,10 @@ defmodule Spellbook.Linker do
     link_lib(Path.join(base, "lib"))
   end
 
+  @doc """
+  Handles the linking process, given the path to a spell's bin directory, for all artifacts
+  in it's `bin/`.
+  """
   def link_binary(bin_path) do
     create_bin_dir()
 
@@ -28,6 +48,10 @@ defmodule Spellbook.Linker do
     end
   end
 
+  @doc """
+  Handles the linking process, given the path to a spell's share directory, for all artifacts
+  in it's `share/`.
+  """
   def link_share(share_path) do
     create_share_dir()
 
@@ -36,6 +60,10 @@ defmodule Spellbook.Linker do
     end
   end
 
+  @doc """
+  Handles the linking process, given the path to a spell's lib directory, for all artifacts
+  in it's `lib/`.
+  """
   def link_lib(lib_path) do
     create_lib_dir()
 
@@ -49,6 +77,9 @@ defmodule Spellbook.Linker do
     end
   end
 
+  @doc """
+  Perform a recursive search trhough the tree to father all files.
+  """
   defp link_recursively(source_dir, target_dir) do
     File.ls!(source_dir)
     |> Enum.each(fn file ->
@@ -69,6 +100,9 @@ defmodule Spellbook.Linker do
     end)
   end
 
+  @doc """
+  Creates the given `bin/` in the `$PREFIX/` if not present.
+  """
   defp create_bin_dir() do
     if File.exists?(@bin) == false do
       IO.puts("Creating #{@bin}...")
@@ -76,6 +110,9 @@ defmodule Spellbook.Linker do
     end
   end
 
+  @doc """
+  Creates the given `share/` in the `$PREFIX/` if not present.
+  """
   defp create_share_dir() do
     if File.exists?(@share) == false do
       IO.puts("Creating #{@share}...")
@@ -83,6 +120,9 @@ defmodule Spellbook.Linker do
     end
   end
 
+  @doc """
+  Creates the given `lib/` in the `$PREFIX/` if not present.
+  """
   defp create_lib_dir() do
     if File.exists?(@lib) == false do
       IO.puts("Creating #{@lib}...")

@@ -1,4 +1,8 @@
 defmodule Spellbook.Environment do
+  @moduledoc """
+  Module that handles the environmen and their variables.
+  """
+
   def prefix(), do: System.get_env("SPELLBOOK_PREFIX") || "/opt/spellbook"
   def the_stacks(), do: System.get_env("SPELLBOOK_THE_STACKS") || "#{prefix()}/TheStacks"
 
@@ -13,6 +17,9 @@ defmodule Spellbook.Environment do
       System.get_env("SPELLBOOK_DEFAULT_SPELLBOOK_REPO") ||
         "https://github.com/spellbookpm/StandardBookOfSpells.git"
 
+  @doc """
+  Return a map of all the environment variables
+  """
   def all do
     %{
       prefix: prefix(),

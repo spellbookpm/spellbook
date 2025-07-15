@@ -1,9 +1,19 @@
 defmodule Spellbook.Dispel do
+  @moduledoc """
+  Module for handling the dispeling of a spell, or uninstalling. Called into from the main cli file that
+  parses and handles the command line arguments.
+  """
   @bheavious Spellbook.Action
 
   alias Spellbook.Environment
   alias Spellbook.Utils
 
+  @doc """
+  Handle the dispel subcommand.
+
+  Searches for if the spell is installed by checking `$PREFIX/Spells`. If found. collect the version(s) and
+  get a list of files to be removed. Remove the files and finally the Spell's directory.
+  """
   def perform(args) do
     with {:ok, spell} <- search_for_spell(args),
          spell_path <- Path.join(Environment.spells_dir(), spell),
