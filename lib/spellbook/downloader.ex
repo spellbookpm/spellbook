@@ -5,6 +5,12 @@ defmodule Spellbook.Downloader do
 
   @doc """
   Downloads files from a given URL to the specified path.
+
+  Requires a url, this is the url that the resource resides at.
+  Requires a dest_path, path to the destination to download the resource into.
+
+  On success, return ok with the path to the downloaded resource's parent directory.
+  Otherwise, return an error.
   """
   def download(url, dst_path) do
     try do

@@ -6,6 +6,11 @@ defmodule Spellbook.GitOps do
   @doc """
   Clone a given repository at the url to a target directory.
 
+  Requires a url, this is the url to the git repo.
+  Requires a target, destination for the repository to be clones into.
+
+  On success, return ok. Otherwise, return an error.
+
   Utilized a command to git installed on the system.
   """
   def clone(url, target) do
@@ -28,6 +33,10 @@ defmodule Spellbook.GitOps do
   @doc """
   Fetches and pulls the checked out branch of a given git repo based on the repo's
   current working directory.
+
+  Requires a cwd, current working directory or the path to the reposiory.
+
+  On success, return ok, otherwise, return an error.
 
   Utilizes the system's installed git.
   """

@@ -1,4 +1,9 @@
 defmodule Spellbook.Spell do
+  @moduledoc """
+  This module is the bheavior definition for Spells. All spell defintions should conform
+  to this as the behaviour and implement these callbacks.
+  """
+
   @callback name :: String.t()
   @callback version :: String.t()
   @callback homepage :: String.t()

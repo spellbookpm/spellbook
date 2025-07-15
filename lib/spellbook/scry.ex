@@ -1,10 +1,22 @@
 defmodule Spellbook.Scry do
+  @moduledoc """
+  Module containing code for performaing scry subcommand.
+
+  The scry subcommand searchs for packages based on a given name
+  and returns a list of packages that match with a jaro distance
+  of >= 0.8. 
+  """
   @behaviour Spellbook.Action
 
   alias Spellbook.Environment
 
   alias Spellbook.Stacks
 
+  @doc """
+  Handler for the scry subcommand.
+
+  Expects args to contain a search term.
+  """
   def perform(args) do
     IO.puts("Searching the stacks for #{args}...")
     stack_path = Environment.the_stacks()
@@ -16,6 +28,10 @@ defmodule Spellbook.Scry do
     IO.puts("Search complete...")
   end
 
+  @doc """
+  Performs a resursive search over the repositories of spell definitions
+  in `$PREFIX/TheStacks`
+  """
   defp perform_search(dir, search_term) do
     dir
     |> File.ls!()
@@ -38,6 +54,12 @@ defmodule Spellbook.Scry do
     end)
   end
 
+  @doc """
+  Uses the jaro distance to compute a match between an expected file name
+  without the path or extension and a given search term.
+
+  Returns true if the jaro distance is >= 0.8. Else, returns false.
+  """
   defp is_match?(file, search_term) do
     probable = Path.basename(file) |> Path.rootname(".exs")
     String.jaro_distance(probable, search_term) >= 0.8
