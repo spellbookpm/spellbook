@@ -48,21 +48,4 @@ defmodule Spellbook.Cast do
     end
   end
 
-  # TODO: move to utilities since this can be used elsewhere
-  @doc """
-  Helper function to compile and load a path'd exs file. In this case, it is used to load
-  the spell specification from the 'ports tree' repository on the disk.
-  """
-  defp load_file(args) do
-    case Code.compile_file(args) do
-      [{module, _binary}] ->
-        {:ok, module}
-
-      [] ->
-        {:error, "Not found."}
-
-      _ ->
-        {:error, "Unknown error."}
-    end
-  end
 end
