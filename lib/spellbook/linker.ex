@@ -25,7 +25,6 @@ defmodule Spellbook.Linker do
       |> Path.join(name)
       |> Path.join(version)
 
-    dbg(base)
     link_binary(Path.join(base, "bin"))
     link_share(Path.join(base, "share"))
     link_lib(Path.join(base, "lib"))

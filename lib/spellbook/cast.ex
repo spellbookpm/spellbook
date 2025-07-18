@@ -11,6 +11,7 @@ defmodule Spellbook.Cast do
   @behaviour Spellbook.Action
 
   alias Spellbook.Builder
+  alias Spellbook.Linker
   alias Spellbook.Spells
   alias Spellbook.Stacks
   alias Spellbook.Utils
@@ -31,11 +32,7 @@ defmodule Spellbook.Cast do
          sources_path <- Path.join(sources_path, module.name() <> "-" <> module.version()),
          install_prefix <- Utils.compute_install_prefix(module.name(), module.version()),
          :ok <- Builder.run_install(module, %{install_prefix: install_prefix, cwd: sources_path}) do
-      IO.puts("Found spell: " <> module.name() <> "-" <> module.version())
-      IO.puts("Build path: #{build_path}")
-      IO.puts("Sources path: #{sources_path}")
-      IO.puts("Install prefix: #{install_prefix}")
-      IO.puts("Casting complete for #{module.name()}")
+      Linker.link_spell(module.name(), module.version()) 
     else
       true ->
         IO.puts("Spell #{args} has already been casted.")
