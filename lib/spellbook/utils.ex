@@ -153,7 +153,7 @@ defmodule Spellbook.Utils do
   """
   def remove_file(file) do
     if File.exists?(file) do
-      Io.puts("Removing file: #{file}")
+      IO.puts("Removing file: #{file}")
       File.rm(file)
     end
   end
@@ -183,5 +183,13 @@ defmodule Spellbook.Utils do
   def rm_rf(path) do
     IO.puts("Removing directly #{path}")
     File.rm_rf(path)
+  end
+
+  def yes_no_prompt(prompt) do
+    case IO.getn(prompt <> " [y/n] ", 1) do
+      "y" -> :yes
+      "n" -> :no
+      _ -> :unsupported_input
+    end
   end
 end

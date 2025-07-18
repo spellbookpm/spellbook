@@ -81,6 +81,11 @@ defmodule Spellbook.Stacks do
     end
   end
 
+  def search_stacks_get_first(search_term) do
+    search_stacks(search_term)
+    |> List.first()
+  end
+
   @doc """
   Entry function for a recursive search the stack to find a spell based on a given search term.
 

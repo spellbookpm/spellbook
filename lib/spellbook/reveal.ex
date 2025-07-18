@@ -2,7 +2,7 @@ defmodule Spellbook.Reveal do
   @moduledoc """
   Module for containing the code to handle the reveal subcommand.
   """
-  
+
   @behaviour Spellbook.Action
 
   @doc """

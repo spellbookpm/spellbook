@@ -2,7 +2,7 @@ defmodule Spellbook.Renew do
   @moduledoc """
   Module for the command line to call into for handling the renew subcommand.
   """
-  
+
   @behaviour Spellbook.Action
 
   alias Spellbook.Stacks

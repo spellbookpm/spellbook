@@ -10,7 +10,7 @@ defmodule Spellbook.Linker do
   location. So in the case of `/opt/spellbook/Spells/htop/<VERSION>/bin/htop`, it should create a symlink
   to `/opt/spellbook/bin/htop`.
   """
-  
+
   @bin Path.join(Spellbook.Environment.prefix(), "bin")
   @share Path.join(Spellbook.Environment.prefix(), "share")
   @lib Path.join(Spellbook.Environment.prefix(), "lib")

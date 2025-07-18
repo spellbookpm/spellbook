@@ -77,7 +77,22 @@ defmodule Spellbook.CLI do
           ],
           empower: [
             name: "empower",
-            about: "Upgrade a casted spell"
+            about: "Upgrade a casted spell",
+            args: [
+              spell: [
+                value_name: "SPELL",
+                help: "PACKAGE (Optional; for only empowering a single spell)",
+                required: false,
+                parser: :string
+              ]
+            ],
+            flags: [
+              all: [
+                long: "--all",
+                help: "Empower all spells",
+                multiple: false
+              ]
+            ]
           ]
         ]
       )
@@ -110,7 +125,7 @@ defmodule Spellbook.CLI do
     Spellbook.Cast.perform(spell)
   end
 
-  @doc"""
+  @doc """
   Function for handling the dispel subcommand.
   """
   defp handle([:dispel], %{args: %{spell: spell}}) do
@@ -153,7 +168,7 @@ defmodule Spellbook.CLI do
   @doc """
   Function for handling the renrew subcommand.
   """
-  defp handle([:empower], _args) do
-    IO.puts("Empowering")
+  defp handle([:empower], %{args: %{spell: spell}, flags: %{all: all}}) do
+    Spellbook.Empower.perform(%{spell: spell, all: all})
   end
 end
