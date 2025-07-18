@@ -17,7 +17,7 @@ defmodule Spellbook.GitOps do
     {:ok, git_path} = Spellbook.Utils.get_executable_path("git")
     dbg(git_path)
 
-    case System.cmd(git_path, ["clone", url], cd: target) do
+    case System.cmd(git_path, ["clone", url], cd: target, into: IO.stream()) do
       {_message, 0} ->
         :ok
 
