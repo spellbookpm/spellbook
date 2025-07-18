@@ -12,5 +12,6 @@ defmodule Spellbook.Spell do
   @callback deps :: [String.t()]
   @callback checksum :: String.t()
   @callback source :: String.t()
+  @callback description :: String.t()
   @callback install(args :: map()) :: any()
 end
