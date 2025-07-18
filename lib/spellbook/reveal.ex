@@ -23,11 +23,14 @@ defmodule Spellbook.Reveal do
       spec ->
         case Code.load_file(spec) do
           [{module, _binary}] ->
+            IO.puts("---")
             IO.puts("name: #{module.name()}")
+            IO.puts("description: #{module.description()}")
             IO.puts("version: #{module.version()}")
             IO.puts("type: #{module.type()}")
             IO.puts("homepage: #{module.homepage()}")
             IO.puts("license: #{module.license()}")
+            IO.puts("---")
 
           _ ->
             IO.puts("Could not load module for #{spec}")
