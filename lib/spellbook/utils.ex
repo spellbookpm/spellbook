@@ -47,7 +47,7 @@ defmodule Spellbook.Utils do
   Otherwise return an a tuple with an error and a message.
   """
   # TODO: refactor into Spellbook.Downloader
-  def download_source(source, target_dir, _target_name) do
+  def download_source(source, target_dir) do
     file_name = List.last(String.split(source, "/"))
 
     dst_path =

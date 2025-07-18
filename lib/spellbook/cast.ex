@@ -10,7 +10,10 @@ defmodule Spellbook.Cast do
 
   @behaviour Spellbook.Action
 
+  alias Spellbook.Builder
+  alias Spellbook.Spells
   alias Spellbook.Stacks
+  alias Spellbook.Utils
 
   # TODO: refactor to use pipes
 
@@ -18,99 +21,37 @@ defmodule Spellbook.Cast do
    Function called by the cli to handle casting of a spell, or installing a requested package. 
   """
   def perform(args) do
-    IO.puts("Looking up spell #{args}")
-
-    spec =
-      case Stacks.search_stacks(args) do
-        [] ->
-          IO.puts("Could not find #{args}")
-          :error
-
-        [first | _rest] ->
-          first
-      end
-
-    dbg(spec)
-
     IO.puts("Warming up to perform cast...")
     IO.puts("Casting #{args}")
 
-    module =
-      case load_file(spec) do
-        {:ok, module} -> module
-        {:error, message} -> IO.puts("Error: #{message}")
-      end
+    with false <- Spells.does_spell_exist(args),
+         {:ok, module} <- Builder.get_spell_specification(args),
+         {:ok, build_path} <- Builder.setup_build_dir(module.name(), module.version()),
+         {:ok, sources_path} <- Builder.get_build_sources(module.source(), build_path),
+         sources_path <- Path.join(sources_path, module.name() <> "-" <> module.version()),
+         install_prefix <- Utils.compute_install_prefix(module.name(), module.version()),
+         :ok <- Builder.run_install(module, %{install_prefix: install_prefix, cwd: sources_path}) do
+      IO.puts("Found spell: " <> module.name() <> "-" <> module.version())
+      IO.puts("Build path: #{build_path}")
+      IO.puts("Sources path: #{sources_path}")
+      IO.puts("Install prefix: #{install_prefix}")
+      IO.puts("Casting complete for #{module.name()}")
+    else
+      true ->
+        IO.puts("Spell #{args} has already been casted.")
+        :error
 
-    tmp_dir =
-      case Spellbook.Utils.get_tmp_dir() do
-        {:ok, tmp_dir} ->
-          tmp_dir
+      {:error, message} ->
+        IO.puts("Error: #{message}")
+        :error
 
-        {:error, message} ->
-          IO.puts("Error: #{message}")
-          {:error}
-      end
-
-    pkg_name = "#{module.name()}-#{module.version()}"
-
-    build_dir = "#{tmp_dir}#{module.name()}-#{module.version()}"
-    IO.puts("Build directory: #{build_dir}")
-
-    build_dir =
-      case Spellbook.Utils.create_dir(build_dir) do
-        {:ok, path} ->
-          path
-
-        {:error, message} ->
-          IO.puts("Error creating build directory: #{message}")
-          System.halt(1)
-      end
-
-    # download and extract
-    tar_executable =
-      case Spellbook.Utils.get_executable_path("tar") do
-        {:ok, tar_path} ->
-          tar_path
-
-        {:error, message} ->
-          IO.puts("Error: #{message}")
-          System.halt(1)
-      end
-
-    {result, path} = Spellbook.Utils.download_source(module.source(), build_dir, pkg_name)
-    IO.puts("Extracing #{path}....")
-
-    path =
-      case Spellbook.Utils.untar(tar_executable, build_dir, Path.basename(path)) do
-        {:ok, path} ->
-          path
-
-        {:error, message} ->
-          IO.puts("Error: #{message}")
-          System.halt(1)
-      end
-
-    IO.puts("Extraction complete: #{path}")
-
-    install_prefix = Spellbook.Utils.compute_install_prefix(module.name(), module.version())
-
-    # run build commands
-    case module.install(%{
-           prefix: install_prefix,
-           cwd: "#{path}/#{module.name()}-#{module.version()}"
-         }) do
-      :ok ->
-        IO.puts("Successfully installed #{module.name()}")
+      _ ->
+        IO.puts("An unknown error occured")
+        :error
     end
-
-    IO.puts("Linking...")
-    Spellbook.Linker.link_spell(module.name(), module.version())
-
-    # clean up
-
-    IO.puts("Done casting...")
   end
 
+  # TODO: move to utilities since this can be used elsewhere
   @doc """
   Helper function to compile and load a path'd exs file. In this case, it is used to load
   the spell specification from the 'ports tree' repository on the disk.

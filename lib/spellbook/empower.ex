@@ -14,7 +14,7 @@ defmodule Spellbook.Empower do
 
   def empower_all() do
     # TODO: To do later
-    IO.puts("To do later")
+    IO.puts("Currently and unsupported operation... WIP.")
   end
 
   def empower_spell(spell) do
@@ -27,8 +27,10 @@ defmodule Spellbook.Empower do
       case Utils.yes_no_prompt("Would you like to empower #{spell} to #{}?") do
         :yes ->
           IO.puts("Starting empowerment...")
+
         :no ->
           IO.puts("Shutting down empowerment...")
+
         :unsupported_input ->
           IO.puts("Shutting down empowerment. Invalid input to prompt.")
       end
