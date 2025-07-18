@@ -29,7 +29,7 @@ defmodule Spellbook.Empower do
           IO.puts("Starting empowerment...")
         :no ->
           IO.puts("Shutting down empowerment...")
-        :unsupported_unput ->
+        :unsupported_input ->
           IO.puts("Shutting down empowerment. Invalid input to prompt.")
       end
     else
