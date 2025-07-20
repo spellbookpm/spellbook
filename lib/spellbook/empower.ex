@@ -1,6 +1,8 @@
 defmodule Spellbook.Empower do
   @behaviour Spellbook.Action
 
+  alias Spellbook.Builder
+  alias Spellbook.Linker
   alias Spellbook.Spells
   alias Spellbook.Utils
 
@@ -14,7 +16,7 @@ defmodule Spellbook.Empower do
 
   def empower_all() do
     # TODO: To do later
-    IO.puts("Currently and unsupported operation... WIP.")
+    IO.puts("Currently an unsupported operation... WIP.")
   end
 
   def empower_spell(spell) do
@@ -27,6 +29,7 @@ defmodule Spellbook.Empower do
       case Utils.yes_no_prompt("Would you like to empower #{spell} to #{}?") do
         :yes ->
           IO.puts("Starting empowerment...")
+          install_spell(spell)
 
         :no ->
           IO.puts("Shutting down empowerment...")
@@ -44,6 +47,26 @@ defmodule Spellbook.Empower do
       {:error, message} ->
         IO.puts("Error: #{message}")
     end
+  end
+
+  defp install_spell(spell) do
+    with {:ok, module} <- Builder.get_spell_specification(spell),
+         {:ok, build_path} <- Builder.setup_build_dir(module.name(), module.version()),
+         {:ok, sources_path} <- Builder.get_build_sources(module.source(), build_path),
+         sources_path <- Path.join(sources_path, module.name() <> "-" <> module.version()),
+         install_prefix <- Utils.compute_install_prefix(module.name(), module.version()),
+         :ok <- Builder.run_install(module, %{install_prefix: install_prefix, cwd: sources_path}) do
+      Linker.link_spell(module.name(), module.version()) 
+    else
+      {:error, message} ->
+        IO.puts("Error: #{message}")
+        :error
+
+      _ ->
+        IO.puts("An unknown error occured")
+        :error
+    end
+
   end
 
   defp get_stack_version(spell) do
