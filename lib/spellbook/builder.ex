@@ -87,6 +87,9 @@ defmodule Spellbook.Builder do
       :error ->
         {:error, "Failed to build"}
 
+      {:error, message} ->
+        {:error, message}
+
       _ ->
         {:error, "Unknown error on building"}
     end
