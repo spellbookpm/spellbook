@@ -27,3 +27,5 @@ spellbook-*.tar
 
 ./config.log
 config.log
+rel
+.DS_Store
