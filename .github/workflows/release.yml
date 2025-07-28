@@ -1,0 +1,33 @@
+name: Release
+
+on:
+  push: 
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Elixir
+        uses: erlef/setup-beam@v1
+        with:
+          elixir-version: '1.18'
+          otp-version: '28'
+
+      - name: Install dependencies
+        run: mix deps.get
+
+      - name: Build escript
+        run: mix escript.build
+
+      - name: Upload release asset
+        uses: softprops/action-gh-release@v2
+        with:
+          files: spellbook
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
