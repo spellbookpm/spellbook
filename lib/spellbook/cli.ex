@@ -199,6 +199,6 @@ defmodule Spellbook.CLI do
   end
 
   defp handle([:bind], %{args: %{spell: spell, version: version}}) do
-    IO.puts("Not implemented yet.")
+    Spellbook.Bind.perform(spell, version)
   end
 end

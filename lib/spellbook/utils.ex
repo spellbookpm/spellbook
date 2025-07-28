@@ -34,6 +34,10 @@ defmodule Spellbook.Utils do
   """
   def create_symlink(source, target) do
     IO.puts("Creating symlink #{source} -> #{target}")
+    if File.exists?(target) do
+      File.rm_rf(target)
+    end
+
     File.ln_s!(source, target)
   end
 
