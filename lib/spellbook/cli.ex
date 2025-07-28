@@ -57,7 +57,15 @@ defmodule Spellbook.CLI do
           ],
           grimoire: [
             name: "grimoire",
-            about: "List casted spells"
+            about: "List casted spells",
+            args: [
+              spell: [
+                value_name: "SPELL",
+                help: "Check grimoire for spell",
+                required: false,
+                parser: :string
+              ]
+            ]
           ],
           reveal: [
             name: "reveal",
@@ -91,6 +99,24 @@ defmodule Spellbook.CLI do
                 long: "--all",
                 help: "Empower all spells",
                 multiple: false
+              ]
+            ]
+          ],
+          bind: [
+            name: "bind",
+            about: "Utilize a specific version of a spell",
+            args: [
+              spell: [
+                value_name: "SPELL",
+                help: "Name of packafe",
+                required: true,
+                parse: :string
+              ],
+              version: [
+                value_name: "VERSION",
+                help: "Version to use",
+                required: true,
+                parse: :string
               ]
             ]
           ]
@@ -170,5 +196,9 @@ defmodule Spellbook.CLI do
   """
   defp handle([:empower], %{args: %{spell: spell}, flags: %{all: all}}) do
     Spellbook.Empower.perform(%{spell: spell, all: all})
+  end
+
+  defp handle([:bind], %{args: %{spell: spell, version: version}}) do
+    IO.puts("Not implemented yet.")
   end
 end

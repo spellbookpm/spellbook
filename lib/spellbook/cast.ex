@@ -16,8 +16,6 @@ defmodule Spellbook.Cast do
   alias Spellbook.Stacks
   alias Spellbook.Utils
 
-  # TODO: refactor to use pipes
-
   @doc """
    Function called by the cli to handle casting of a spell, or installing a requested package. 
   """
