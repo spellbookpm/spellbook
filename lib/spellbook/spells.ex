@@ -34,10 +34,9 @@ defmodule Spellbook.Spells do
   Returns true if it exists, false if not
   """
   def does_spell_exist(name) do
-    spell =
-      @spells_dir
-      |> File.ls!()
-      |> Enum.member?(name)
+    @spells_dir
+    |> File.ls!()
+    |> Enum.member?(name)
   end
 
   @doc """

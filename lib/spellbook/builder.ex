@@ -3,7 +3,6 @@ defmodule Spellbook.Builder do
   Module for code related to the building and build environment of packages.
   """
 
-  alias Spellbook.Environment
   alias Spellbook.Stacks
   alias Spellbook.Utils
 

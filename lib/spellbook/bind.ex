@@ -9,14 +9,14 @@ defmodule Spellbook.Bind do
   alias Spellbook.Linker
   alias Spellbook.Spells
 
+  def perform(args) do
+    IO.puts("Swapping #{args.spell} to use #{args.version}")
 
-  def perform(spell, version) do
-    IO.puts("Swapping #{spell} to use #{version}")
-    with {:ok, spell_path} <- Spells.find_spell(spell),
-         {:ok, versions} <- Spells.collect_spell_versions(spell_path), 
-         true <- contains_version?(versions, version) do
-      Linker.link_spell(spell, version)
-      :ok 
+    with {:ok, spell_path} <- Spells.find_spell(args.spell),
+         {:ok, versions} <- Spells.collect_spell_versions(spell_path),
+         true <- contains_version?(versions, args.version) do
+      Linker.link_spell(args.spell, args.version)
+      :ok
     else
       {:error, message} ->
         IO.puts("Error: #{message}")
@@ -30,6 +30,6 @@ defmodule Spellbook.Bind do
 
   defp contains_version?(versions, version) do
     versions
-      |> Enum.member?(version)
+    |> Enum.member?(version)
   end
 end

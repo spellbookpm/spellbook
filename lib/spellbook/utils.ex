@@ -34,10 +34,6 @@ defmodule Spellbook.Utils do
   """
   def create_symlink(source, target) do
     IO.puts("Creating symlink #{source} -> #{target}")
-    if File.exists?(target) do
-      File.rm_rf(target)
-    end
-
     File.ln_s!(source, target)
   end
 
@@ -68,16 +64,15 @@ defmodule Spellbook.Utils do
 
     IO.puts("Downloading #{source} to #{dst_file}")
 
-    path =
-      case Spellbook.Downloader.download(source, dst_file) do
-        {:ok, path} ->
-          IO.puts("Download complete")
-          {:ok, path}
+    case Spellbook.Downloader.download(source, dst_file) do
+      {:ok, path} ->
+        IO.puts("Download complete")
+        {:ok, path}
 
-        {:error, message} ->
-          IO.puts("Error: #{message}")
-          System.halt(1)
-      end
+      {:error, message} ->
+        IO.puts("Error: #{message}")
+        System.halt(1)
+    end
   end
 
   @doc ~S"""

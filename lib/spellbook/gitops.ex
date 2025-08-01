@@ -25,7 +25,7 @@ defmodule Spellbook.GitOps do
         IO.puts("#{error_code}: #{message}")
         :error
 
-      {[messages], error_code} ->
+      _ ->
         :error
     end
   end
@@ -41,7 +41,7 @@ defmodule Spellbook.GitOps do
   Utilizes the system's installed git.
   """
   def fetch_and_pull(cwd) do
-    {ok, git_path} = Spellbook.Utils.get_executable_path("git")
+    {:ok, git_path} = Spellbook.Utils.get_executable_path("git")
 
     case System.cmd(git_path, ["fetch", "--all"], cd: cwd, into: IO.stream()) do
       {_message, 0} ->
@@ -51,7 +51,7 @@ defmodule Spellbook.GitOps do
         IO.puts("#{error_code}: #{message}")
         :error
 
-      {[messages], error_code} ->
+      _ ->
         :error
     end
 
@@ -63,7 +63,7 @@ defmodule Spellbook.GitOps do
         IO.puts("#{error_code}: #{message}")
         :error
 
-      {[messages], error_code} ->
+      _ ->
         :error
     end
   end

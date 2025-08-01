@@ -76,9 +76,6 @@ defmodule Spellbook.Linker do
     end
   end
 
-  @doc """
-  Perform a recursive search trhough the tree to father all files.
-  """
   defp link_recursively(source_dir, target_dir) do
     File.ls!(source_dir)
     |> Enum.each(fn file ->
@@ -99,9 +96,6 @@ defmodule Spellbook.Linker do
     end)
   end
 
-  @doc """
-  Creates the given `bin/` in the `$PREFIX/` if not present.
-  """
   defp create_bin_dir() do
     if File.exists?(@bin) == false do
       IO.puts("Creating #{@bin}...")
@@ -109,9 +103,6 @@ defmodule Spellbook.Linker do
     end
   end
 
-  @doc """
-  Creates the given `share/` in the `$PREFIX/` if not present.
-  """
   defp create_share_dir() do
     if File.exists?(@share) == false do
       IO.puts("Creating #{@share}...")
@@ -119,9 +110,6 @@ defmodule Spellbook.Linker do
     end
   end
 
-  @doc """
-  Creates the given `lib/` in the `$PREFIX/` if not present.
-  """
   defp create_lib_dir() do
     if File.exists?(@lib) == false do
       IO.puts("Creating #{@lib}...")

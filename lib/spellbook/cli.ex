@@ -143,62 +143,41 @@ defmodule Spellbook.CLI do
     end
   end
 
-  @doc """
-  Funtion for handling the cast subcommand.
-  """
   defp handle([:cast], %{args: %{spell: spell}}) do
     IO.puts("Casting spell: #{spell}")
     Spellbook.Cast.perform(spell)
   end
 
-  @doc """
-  Function for handling the dispel subcommand.
-  """
   defp handle([:dispel], %{args: %{spell: spell}}) do
     IO.puts("Dispelling spell: #{spell}")
     Spellbook.Dispel.perform(spell)
   end
 
-  @doc """
-  Function for handling the scry sub command.
-  """
   defp handle([:scry], %{args: %{term: term}}) do
     IO.puts("Scrying #{term}")
     Spellbook.Scry.perform(term)
   end
 
-  @doc """
-  Function for handling the grimoire subcommand.
-  """
   defp handle([:grimoire], args) do
     IO.puts("Listing spells from your grimoire")
     Spellbook.Grimoire.perform(args)
   end
 
-  @doc """
-  Function for handling the reveal subcommand.
-  """
   defp handle([:reveal], %{args: %{spell: spell}}) do
     IO.puts("Revealing spell: #{spell}")
     Spellbook.Reveal.perform(spell)
   end
 
-  @doc """
-  Function for handling the renew subcommand.
-  """
   defp handle([:renew], args) do
     IO.puts("Renewing the stacks...")
     Spellbook.Renew.perform(args)
   end
 
-  @doc """
-  Function for handling the renrew subcommand.
-  """
   defp handle([:empower], %{args: %{spell: spell}, flags: %{all: all}}) do
     Spellbook.Empower.perform(%{spell: spell, all: all})
   end
 
-  defp handle([:bind], %{args: %{spell: spell, version: version}}) do
-    Spellbook.Bind.perform(spell, version)
+  defp handle([:bind], args) do
+    Spellbook.Bind.perform(args)
   end
 end

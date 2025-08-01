@@ -97,12 +97,6 @@ defmodule Spellbook.Stacks do
     |> Enum.reject(fn path -> path == nil end)
   end
 
-  @doc """
-  Helper function to perform a resursive search given a directory path
-  and a search term.
-
-  Returns a list of files with theri full path.
-  """
   defp do_search(dir, search_term) do
     dir
     |> File.ls!()

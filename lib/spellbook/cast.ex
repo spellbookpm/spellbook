@@ -13,7 +13,6 @@ defmodule Spellbook.Cast do
   alias Spellbook.Builder
   alias Spellbook.Linker
   alias Spellbook.Spells
-  alias Spellbook.Stacks
   alias Spellbook.Utils
 
   @doc """
@@ -30,7 +29,7 @@ defmodule Spellbook.Cast do
          sources_path <- Path.join(sources_path, module.name() <> "-" <> module.version()),
          install_prefix <- Utils.compute_install_prefix(module.name(), module.version()),
          :ok <- Builder.run_install(module, %{install_prefix: install_prefix, cwd: sources_path}) do
-      Linker.link_spell(module.name(), module.version()) 
+      Linker.link_spell(module.name(), module.version())
     else
       true ->
         IO.puts("Spell #{args} has already been casted.")
@@ -45,5 +44,4 @@ defmodule Spellbook.Cast do
         :error
     end
   end
-
 end

@@ -3,7 +3,7 @@ defmodule Spellbook.Dispel do
   Module for handling the dispeling of a spell, or uninstalling. Called into from the main cli file that
   parses and handles the command line arguments.
   """
-  @bheavious Spellbook.Action
+  @behaviour Spellbook.Action
 
   alias Spellbook.Environment
   alias Spellbook.Utils
@@ -32,18 +32,11 @@ defmodule Spellbook.Dispel do
 
       IO.puts("Removal complete")
     else
-      {:error, message} ->
+      _ ->
         IO.puts("Spell not found: #{args}")
     end
   end
 
-  @doc """
-  Entry point for a resursive search for a spell.
-
-  Requires a name, name of the spell to search for.
-
-  Returns a list of spells that match the name.
-  """
   defp search_for_spell(name) do
     spell =
       Environment.spells_dir()
@@ -56,14 +49,6 @@ defmodule Spellbook.Dispel do
     end
   end
 
-  @doc """
-  Get the first entry in a list.
-
-  Requires a list.
-
-  Returns an error with a message if the list does not contain any entries.
-  If it contains entries, return the first entry with an ok.
-  """
   defp get_first(list) do
     case List.first(list) do
       nil ->
@@ -74,14 +59,6 @@ defmodule Spellbook.Dispel do
     end
   end
 
-  @doc """
-  Get a list of version for a spell, given its path.
-
-  Requires a root_path, which is the path to the directory of a given spell.
-
-  Returns ok with a list of versions, if there are versions within. Otherwise,
-  return an error with a message.
-  """
   defp collect_versions(root_path) do
     versions =
       root_path
@@ -96,13 +73,6 @@ defmodule Spellbook.Dispel do
     end
   end
 
-  @doc """
-  Recursive each and collection of build artifacts from a spell.
-
-  Requires a dir, the path to the installed spell of its version.
-
-  Return a list of files with their path of build artifacts.
-  """
   defp collect_artifacts(dir) do
     dir
     |> File.ls!()
