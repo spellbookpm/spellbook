@@ -21,7 +21,7 @@ defmodule Spellbook.Reveal do
         :error
 
       spec ->
-        case Code.load_file(spec) do
+        case Code.compile_file(spec) do
           [{module, _binary}] ->
             IO.puts("---")
             IO.puts("name: #{module.name()}")

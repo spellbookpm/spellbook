@@ -16,7 +16,7 @@ defmodule Spellbook.Builder do
   """
   def get_spell_specification(spell_name) do
     with spell_spec <- Stacks.search_stacks_get_first(spell_name),
-         [{module, _binary}] <- Code.load_file(spell_spec) do
+         [{module, _binary}] <- Code.compile_file(spell_spec) do
       {:ok, module}
     else
       nil -> {:error, "Could not locate a spell"}
