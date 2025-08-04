@@ -28,6 +28,8 @@ defmodule Spellbook.Linker do
     link_binary(Path.join(base, "bin"))
     link_share(Path.join(base, "share"))
     link_lib(Path.join(base, "lib"))
+
+    :ok
   end
 
   @doc """

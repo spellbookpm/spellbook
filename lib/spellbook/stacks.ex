@@ -83,7 +83,7 @@ defmodule Spellbook.Stacks do
 
   def search_stacks_get_first(search_term) do
     search_stacks(search_term)
-    |> List.first()
+    |> List.first(nil)
   end
 
   @doc """
