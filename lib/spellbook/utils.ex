@@ -183,7 +183,10 @@ defmodule Spellbook.Utils do
     IO.puts("Removing directly #{path}")
     File.rm_rf(path)
   end
-
+  
+  @doc """
+  Present a prompt for the user to answer
+  """
   def yes_no_prompt(prompt) do
     case IO.getn(prompt <> " [y/n] ", 1) do
       "y" -> :yes

@@ -4,11 +4,13 @@ defmodule Spellbook.TopologicalSort do
   of the dependency tree.
   """
 
+  @doc """
+  Apply a topological sort to a graph
+  """
   def sort(tree) do
     do_sort(tree, [], MapSet.new())
   end
 
-  # defp do_sort([], acc, seen), do: Enum.reverse(acc)
   defp do_sort([], acc, seen), do: {acc, seen}
 
   defp do_sort([{spell, children} | rest], acc, seen) do

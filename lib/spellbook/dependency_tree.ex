@@ -5,6 +5,9 @@ defmodule Spellbook.DependencyTree do
 
   alias Spellbook.Stacks
 
+  @doc """
+  Given a spell name, build a graph of the dependencies
+  """
   def build(spell_name) do
     build(spell_name, %{})
   end
@@ -27,8 +30,6 @@ defmodule Spellbook.DependencyTree do
         {:error, reason} ->
           IO.warn("Failed to load spell #{spell_name}: #{reason}")
 
-          # :end ->
-          #   dbg("Found the end of a branch")
       end
     end
   end
