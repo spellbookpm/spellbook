@@ -124,6 +124,8 @@ defmodule Spellbook.Utils do
   Otherwise, return an error and a message.
   """
   def untar(program, path, tarball) do
+    # dbg(path)
+    # dbg(tarball)
     case System.cmd(program, ["xf", tarball], cd: path) do
       {_collectable, 0} -> {:ok, path}
       {_collectable, 1} -> {:error, "Could not untar file..."}

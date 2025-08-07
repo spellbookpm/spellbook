@@ -56,7 +56,9 @@ defmodule Spellbook.Builder do
     with {:ok, tar_path} <- Utils.get_executable_path("tar"),
          {:ok, download_path} <- Utils.download_source(source, target),
          {:ok, untar_path} <- Utils.untar(tar_path, target, Path.basename(download_path)) do
-      {:ok, untar_path}
+      # IO.inspect(download_path, label: "download_path")
+      # IO.inspect(untar_path, label: "untar_path")
+      {:ok, untar_path, Path.basename(download_path)}
     else
       {:error, message} ->
         {:error, message}

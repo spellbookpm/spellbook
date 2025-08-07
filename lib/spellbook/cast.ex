@@ -85,8 +85,9 @@ defmodule Spellbook.Cast do
     with false <- Spells.does_spell_exist(spell_name),
          {:ok, module} <- Builder.get_spell_specification(spell_name),
          {:ok, build_path} <- Builder.setup_build_dir(module.name(), module.version()),
-         {:ok, sources_path} <- Builder.get_build_sources(module.source(), build_path),
-         sources_path <- Path.join(sources_path, module.name() <> "-" <> module.version()),
+         {:ok, sources_path, tar_name} <- Builder.get_build_sources(module.source(), build_path),
+         # sources_path <- Path.join(sources_path, module.name() <> "-" <> module.version()),
+         sources_path <- Path.join(sources_path, remove_tar_extension(tar_name)),
          install_prefix <- Utils.compute_install_prefix(module.name(), module.version()),
          :ok <- Builder.run_install(module, %{install_prefix: install_prefix, cwd: sources_path}) do
       Linker.link_spell(module.name(), module.version())
@@ -122,5 +123,11 @@ defmodule Spellbook.Cast do
     Enum.each(deps, fn dep -> IO.puts("\t#{dep}") end)
     IO.puts("\t#{spell}")
     Utils.yes_no_prompt("Do you wish to continu?")
+  end
+
+  defp remove_tar_extension(tar) do
+    tar
+    |> String.split(".tar")
+    |> List.first()
   end
 end
