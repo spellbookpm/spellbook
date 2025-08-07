@@ -25,11 +25,15 @@ defmodule Spellbook.Cast do
     with dependency_list <- get_install_order(args),
          installed_spells <- get_installed_spells(),
          final_list <- remove_installed_spells(dependency_list, installed_spells),
+         :yes <- confirm_action(final_list, args),
          :ok <- install_dependencies(final_list),
          :ok <- install_spell(args) do
       IO.puts("Casted #{args} sucessfully")
       :ok
     else
+      :no ->
+        IO.puts("Canceling cast....")
+        :ok
       _ ->
         :error
     end
@@ -111,5 +115,12 @@ defmodule Spellbook.Cast do
   defp remove_installed_spells(dep_list, installed_list) do
     dep_list
     |> Enum.reject(fn entry -> entry in installed_list end)
+  end
+
+  defp confirm_action(deps, spell) do
+    IO.puts("To complete cast, need to install the following:")
+    Enum.each(deps, fn dep -> IO.puts("\t#{dep}") end)
+    IO.puts("\t#{spell}")
+    Utils.yes_no_prompt("Do you wish to continu?")
   end
 end

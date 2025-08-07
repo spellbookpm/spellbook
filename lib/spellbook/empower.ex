@@ -71,7 +71,6 @@ defmodule Spellbook.Empower do
   defp get_stack_version(spell) do
     with spell_spec <- Spellbook.Stacks.search_stacks_get_first(spell),
          [{module, _binary}] <- Code.compile_file(spell_spec) do
-      # dbg(spell_spec)
       {:ok, module.version()}
     else
       _ -> {:error, "Could not find spell in the stacks"}
