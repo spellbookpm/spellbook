@@ -16,6 +16,7 @@ defmodule Spellbook.Dispel do
   """
   def perform(args) do
     with {:ok, spell} <- search_for_spell(args),
+         :yes <- Utils.yes_no_prompt("Are you sure you want to dispel #{args}?"),
          spell_path <- Path.join(Environment.spells_dir(), spell),
          {:ok, versions} <- collect_versions(spell_path),
          version_paths <- Enum.map(versions, fn version -> Path.join(spell_path, version) end),
@@ -32,6 +33,8 @@ defmodule Spellbook.Dispel do
 
       IO.puts("Removal complete")
     else
+      :no ->
+        IO.puts("Canceling cast.....")
       _ ->
         IO.puts("Spell not found: #{args}")
     end
