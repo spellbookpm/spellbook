@@ -29,7 +29,6 @@ defmodule Spellbook.DependencyTree do
 
         {:error, reason} ->
           IO.warn("Failed to load spell #{spell_name}: #{reason}")
-
       end
     end
   end

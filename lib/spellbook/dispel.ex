@@ -35,6 +35,7 @@ defmodule Spellbook.Dispel do
     else
       :no ->
         IO.puts("Canceling cast.....")
+
       _ ->
         IO.puts("Spell not found: #{args}")
     end

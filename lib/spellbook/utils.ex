@@ -185,7 +185,7 @@ defmodule Spellbook.Utils do
     IO.puts("Removing directly #{path}")
     File.rm_rf(path)
   end
-  
+
   @doc """
   Present a prompt for the user to answer
   """
