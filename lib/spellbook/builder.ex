@@ -55,10 +55,12 @@ defmodule Spellbook.Builder do
   def get_build_sources(source, target) do
     with {:ok, tar_path} <- Utils.get_executable_path("tar"),
          {:ok, download_path} <- Utils.download_source(source, target),
-         {:ok, untar_path} <- Utils.untar(tar_path, target, Path.basename(download_path)) do
-      # IO.inspect(download_path, label: "download_path")
-      # IO.inspect(untar_path, label: "untar_path")
-      {:ok, untar_path, Path.basename(download_path)}
+         before_list <- MapSet.new(File.ls!(target)),
+         {:ok, untar_path} <- Utils.untar(tar_path, target, Path.basename(download_path)),
+         after_list <- MapSet.new(File.ls!(target)),
+         uncompressed <- MapSet.difference(after_list, before_list) |> MapSet.to_list(),
+         sources <- List.first(uncompressed, nil) do
+      {:ok, untar_path, uncompressed}
     else
       {:error, message} ->
         {:error, message}
