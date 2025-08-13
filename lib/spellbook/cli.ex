@@ -3,7 +3,7 @@ defmodule Spellbook.CLI do
   Module for handling the command line arguments and parsing for the spellbook command-line interface.
   """
 
-  @version "0.1.3"
+  @version "0.1.4"
 
   @doc """
   Main entry point to be called by the binary.
